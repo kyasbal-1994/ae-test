@@ -15,6 +15,7 @@ def plot_mnist_data(samples, suffix,l):
         plt.subplot(4, 4, index + 1)
         plt.axis('off')
         plt.imshow(data.reshape(28, 28))
+
     plt.savefig("./lerp/epoch_" + str(l) + "_" + suffix + '.png')
 
 train, test = chainer.datasets.get_mnist()
@@ -52,10 +53,9 @@ for ti in range(0, 100):
             next = 0
         p = enc_data[i][0]
         n = enc_data[next][0]
-        c = (n - p) * t + p
+        c = (n - p) * t + p # 2つの特徴ベクトルを線形補間
         pred_data = model.predictor(
             np.array([c]).astype(np.float32), "DEC").data
-        predictedData.append(
-            (pred_data, str(enc_data[i][1]) + "-" + str(enc_data[next][1])))
+        predictedData.append((pred_data, str(enc_data[i][1]) + "-" + str(enc_data[next][1])))
     plot_mnist_data(predictedData,"LERPED",ti)
     
